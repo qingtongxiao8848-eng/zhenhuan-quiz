@@ -212,7 +212,8 @@
                 
                 <!-- Character Avatar Image Frame -->
                 <div class="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto mt-5 mb-3 rounded-full border-4 border-palace-gold overflow-hidden shadow-2xl bg-palace-wood group">
-                    <img id="char-avatar" alt="角色肖像" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">s
+                    <img id="char-avatar" alt="角色肖像" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center bg-palace-darkred font-calligraphy text-4xl text-palace-gold\'>宫</div>';">
+                </div>
 
                 <h2 class="text-3xl sm:text-4xl font-calligraphy text-palace-gold mt-2" id="char-name">甄嬛</h2>
                 <p class="text-sm text-palace-wood/80 italic mt-1" id="char-title">【功成身退的后宫至尊】</p>
@@ -242,12 +243,12 @@
                 <button id="result-home-btn" onclick="goHome()" class="bg-white/60 hover:bg-white text-palace-wood font-bold px-6 py-3 rounded text-sm tracking-wider border border-palace-gold/60 transition flex-1">
                     返回首页
                 </button>
-                
+                <button id="share-btn" onclick="copyShareText()" class="bg-palace-wood hover:bg-black/60 text-palace-gold font-bold px-6 py-3 rounded text-sm tracking-wider border border-palace-gold/60 transition flex-1 flex items-center justify-center gap-2">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
                     复制结果卡片
                 </button>
             </div>
-            
+            <div id="toast-msg" class="text-center text-xs text-palace-gold mt-3 opacity-0 transition-opacity">已复制结果文案，快去分享给好友吧！</div>
         </div>
 
     </main>
@@ -426,7 +427,7 @@
                 { text: { zh: '这份关注让我有些不安。我更在意别人是否因此讨厌我。', en: 'The attention makes me uneasy. I worry whether others now dislike me.' }, scores: { anlingrong: 2 } },
                 { text: { zh: '恩宠也好，冷落也罢，我不想因此改变自己。', en: 'Favor or neglect, I do not want either to change who I am.' }, scores: { yelanyi: 2, guojunwang: 1 } }
             ]},
-            { id: 4, title: { zh: '你最信任的人突然被指控犯错。所有证据似乎都指向她，她只对你说了一句：“你信我吗？”你会——', en: 'Your closest friend is accused and asks only: “Do you believe me?”' }, options: [
+            { id: 4, title: { zh: '你最信任的人突然被指控犯错。所有证据似乎都指向她，她只对说什么了一句：“你信我吗？”你会——', en: 'Your closest friend is accused and asks only: “Do you believe me?”' }, options: [
                 { text: { zh: '先调查真相。信任不代表盲目，但我不会轻易放弃朋友。', en: 'Seek the truth first. Trust is not blindness, but I will not abandon a friend easily.' }, scores: { zhenhuan: 2 } },
                 { text: { zh: '如果我相信她，就会站在她身边。其他人的看法不重要。', en: 'If I believe her, I will stand beside her. Others’ opinions do not matter.' }, scores: { meizhuang: 2, guojunwang: 1 } },
                 { text: { zh: '我会怀疑：她是不是有什么事情没有告诉我？', en: 'I would wonder whether she is hiding something from me.' }, scores: { empress: 2, anlingrong: 1 } },
@@ -492,6 +493,8 @@
             document.getElementById('quote-label').innerText = t.quoteLabel;
             document.getElementById('traits-label').innerHTML = `<span class="inline-block w-2 h-2 bg-palace-gold rounded-full mr-2"></span>${t.traitsLabel}`;
             document.getElementById('restart-btn').innerText = t.restartBtn;
+            document.getElementById('share-btn').innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> ${t.shareBtn}`;
+            document.getElementById('toast-msg').innerText = t.toastMsg;
             document.getElementById('footer-text').innerText = t.footerText;
 
             // Re-render current question if quiz active
@@ -651,7 +654,25 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-       
+        function copyShareText() {
+            const name = document.getElementById('char-name').innerText;
+            const title = document.getElementById('char-title').innerText;
+            const text = uiText[currentLang].shareTemplate(name, title);
+
+            // Fallback for clipboard copy
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            const toast = document.getElementById('toast-msg');
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 2500);
+        }
     </script>
 </body>
 </html>
