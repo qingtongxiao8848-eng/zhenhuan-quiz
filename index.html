@@ -97,12 +97,6 @@
             transform: scale(1.01);
         }
 
-        /* Vertical text styling for title accent */
-        .writing-vertical {
-            writing-mode: vertical-rl;
-            text-orientation: upright;
-        }
-
         /* Animations */
         .fade-in {
             animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -151,7 +145,7 @@
             </div>
             
             <p id="welcome-desc" class="text-palace-wood leading-relaxed mb-8 text-sm sm:text-base px-2">
-                后宫如深海，有人步步为营走向权力之巅，有人真情至性宁折不弯，有人机关算尽一场空。若你身处紫禁城的波诡云谲之中，你的性格底色将引领你成为谁？
+                后宫如深海，有人步步为营走向权力之巅，有人真情至性宁折不弯。若你踏入紫禁城，你会如何书写自己的命运？
             </p>
 
             <div id="welcome-quote" class="bg-palace-lightgold/35 border border-palace-gold/30 rounded p-4 mb-8 text-xs text-palace-lightgold/80 italic">
@@ -212,7 +206,7 @@
                 
                 <!-- Character Avatar Image Frame -->
                 <div class="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto mt-5 mb-3 rounded-full border-4 border-palace-gold overflow-hidden shadow-2xl bg-palace-wood group">
-                    <img id="char-avatar" alt="角色肖像" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center bg-palace-darkred font-calligraphy text-4xl text-palace-gold\'>宫</div>';">
+                    <img id="char-avatar" alt="角色肖像" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 </div>
 
                 <h2 class="text-3xl sm:text-4xl font-calligraphy text-palace-gold mt-2" id="char-name">甄嬛</h2>
@@ -221,7 +215,7 @@
 
             <!-- Quote Box -->
             <div class="bg-palace-lightgold/50 border-l-4 border-palace-gold p-4 mb-6 rounded-r">
-                <p id="quote-label" class="text-xs text-palace-gold mb-1 font-semibold">经典金句：</p>
+                <p id="quote-label" class="text-xs text-palace-gold mb-1 font-semibold">人物心声：</p>
                 <p class="text-sm sm:text-base text-palace-ink italic font-serif" id="char-quote">“这几年的情爱与时光，终究是错付了。”</p>
             </div>
 
@@ -229,9 +223,16 @@
             <div class="space-y-5 text-sm leading-relaxed mb-8">
                 <div class="bg-white/55 p-4 rounded border border-palace-gold/15">
                     <h4 id="traits-label" class="text-palace-gold font-bold mb-2 flex items-center">
-                        <span class="inline-block w-2 h-2 bg-palace-gold rounded-full mr-2"></span>性格底色
+                        <span class="inline-block w-2 h-2 bg-palace-gold rounded-full mr-2"></span>你的命运底色
                     </h4>
                     <p class="text-palace-wood text-xs sm:text-sm" id="char-traits">分析中...</p>
+                </div>
+                <!-- 补全了现代生存策略 -->
+                <div class="bg-white/55 p-4 rounded border border-palace-gold/15">
+                    <h4 id="advice-label" class="text-palace-gold font-bold mb-2 flex items-center">
+                        <span class="inline-block w-2 h-2 bg-palace-gold rounded-full mr-2"></span>现代生存策略
+                    </h4>
+                    <p class="text-palace-wood text-xs sm:text-sm" id="char-advice"></p>
                 </div>
             </div>
 
@@ -243,19 +244,14 @@
                 <button id="result-home-btn" onclick="goHome()" class="bg-white/60 hover:bg-white text-palace-wood font-bold px-6 py-3 rounded text-sm tracking-wider border border-palace-gold/60 transition flex-1">
                     返回首页
                 </button>
-                <button id="share-btn" onclick="copyShareText()" class="bg-palace-wood hover:bg-black/60 text-palace-gold font-bold px-6 py-3 rounded text-sm tracking-wider border border-palace-gold/60 transition flex-1 flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-                    复制结果卡片
-                </button>
             </div>
-            <div id="toast-msg" class="text-center text-xs text-palace-gold mt-3 opacity-0 transition-opacity">已复制结果文案，快去分享给好友吧！</div>
         </div>
 
     </main>
 
     <!-- Footer -->
     <footer id="footer-text" class="text-center text-xs text-palace-wood/60 py-3 relative z-10">
-        紫禁风云性格测试 · 紫禁城深宫浮沉录
+        紫禁风云性格测试 · 走完属于你的宫廷命运
     </footer>
 
     <script>
@@ -274,8 +270,8 @@
                     en: "Insightful and strategic, you possess high emotional intelligence and resilience. Though affectionate initially, setbacks teach you to see reality clearly. You balance empathy with decisive grit, navigating complex environments with finesse."
                 },
                 advice: {
-                    zh: "【现代生存策略】你在工作中具备极高的上升潜力。切记保持初心与底线，避免过度沉溺于防备与策略。对待值得信任的伙伴可多一份坦诚，你的格局决定了你能走的远度。",
-                    en: "[Modern Career Guide] You have immense leadership potential. Stay true to your core values and avoid over-defensiveness. Cultivate genuine trust with key allies—your vision will define how far you reach."
+                    zh: "你在工作中具备极高的上升潜力。切记保持初心与底线，避免过度沉溺于防备与策略。对待值得信任的伙伴可多一份坦诚，你的格局决定了你能走的远度。",
+                    en: "You have immense leadership potential. Stay true to your core values and avoid over-defensiveness. Cultivate genuine trust with key allies—your vision will define how far you reach."
                 }
             },
             huafei: {
@@ -291,8 +287,8 @@
                     en: "Vibrant, confident, and direct. You despise hypocrisy and pour your heart into whatever or whoever you commit to. Though hot-tempered at times, your authenticity and magnetic presence attract fiercely loyal allies."
                 },
                 advice: {
-                    zh: "【现代生存策略】你的执行力和个人魅力非凡，但要警惕“刚愎自用”。在职场与生活中，适当收敛锋芒、听取不同意见，可以帮你规避不少小人暗算与不必必要的冲突。",
-                    en: "[Modern Career Guide] Your charisma and execution power are outstanding. However, beware of impulsiveness and rigidity. Listening to diverse perspectives will protect you from unnecessary conflict and hidden pitfalls."
+                    zh: "你的执行力和个人魅力非凡，但要警惕“刚愎自用”。在职场与生活中，适当收敛锋芒、听取不同意见，可以帮你规避不少小人暗算与不必要的冲突。",
+                    en: "Your charisma and execution power are outstanding. However, beware of impulsiveness and rigidity. Listening to diverse perspectives will protect you from unnecessary conflict and hidden pitfalls."
                 }
             },
             empress: {
@@ -308,8 +304,8 @@
                     en: "Patient, observant, and deeply calculating. You thrive on order, control, and long-term planning. Driven by a strong need for security and achievement, you pursue goals with relentless focus."
                 },
                 advice: {
-                    zh: "【现代生存策略】你的管理与规划能力极强，但不要给自己和他人施加过大的心理压力。学会放下过度的执念与完美主义，适度放松才能让生活与事业更加从容可持续。",
-                    en: "[Modern Career Guide] Your organizational skills are top-notch. However, avoid overworking yourself or imposing excessive pressure on others. Releasing obsession and perfectionism makes your success sustainable."
+                    zh: "你的管理与规划能力极强，但不要给自己和他人施加过大的心理压力。学会放下过度的执念与完美主义，适度放松才能让生活与事业更加从容可持续。",
+                    en: "Your organizational skills are top-notch. However, avoid overworking yourself or imposing excessive pressure on others. Releasing obsession and perfectionism makes your success sustainable."
                 }
             },
             meizhuang: {
@@ -325,8 +321,8 @@
                     en: "Elegant, dignified, and steadfast in moral principles. You hold high standards for relationships and character. Once trust is broken, you sever ties cleanly without lingering regret or flattery."
                 },
                 advice: {
-                    zh: "【现代生存策略】你的品质令人敬佩，但有时过分固执可能让自己陷入孤立。在非原则性问题上，保持适度的弹性与圆融，既能保护自己的高洁，又能更好地适应社会。",
-                    en: "[Modern Career Guide] Your integrity is inspiring, but extreme stubbornness may isolate you. Maintaining flexibility in non-essential matters helps protect your ideals while thriving in social environments."
+                    zh: "你的品质令人敬佩，但有时过分固执可能让自己陷入孤立。在非原则性问题上，保持适度的弹性与圆融，既能保护自己的高洁，又能更好地适应社会。",
+                    en: "Your integrity is inspiring, but extreme stubbornness may isolate you. Maintaining flexibility in non-essential matters helps protect your ideals while thriving in social environments."
                 }
             },
             anlingrong: {
@@ -342,8 +338,8 @@
                     en: "Detail-oriented, sensitive, and deeply self-conscious. You work twice as hard to prove your worth and exhibit remarkable mastery in specialized skills. Internal struggles between self-doubt and ambition drive you."
                 },
                 advice: {
-                    zh: "【现代生存策略】你的专注与细腻是巨大的财富。要学会接纳自我，建立由内而外的自信，不必过分介意他人的眼光。停止内耗，把精力放在自我成长而非与他人攀比上。",
-                    en: "[Modern Career Guide] Your precision and dedication are valuable assets. Work on building self-acceptance and internal validation. Focus energy on personal growth rather than comparison with others."
+                    zh: "你的专注与细腻是巨大的财富。要学会接纳自我，建立由内而外的自信，不必过分介意他人的眼光。停止内耗，把精力放在自我成长而非与他人攀比上。",
+                    en: "Your precision and dedication are valuable assets. Work on building self-acceptance and internal validation. Focus energy on personal growth rather than comparison with others."
                 }
             },
             yelanyi: {
@@ -359,8 +355,8 @@
                     en: "Independent, blunt, and unbothered by status or social pleasantries. You treat loved ones with devotion and rivals with icy coldness. You value freedom, authenticity, and living on your own terms."
                 },
                 advice: {
-                    zh: "【现代生存策略】你的真性情非常吸引人，在个人创作或独立工作领域能大放异彩。适当掌握一些人际润滑技巧，可以让你的酷少一些阻碍，多一份自由。",
-                    en: "[Modern Career Guide] Your authenticity shines in creative or independent roles. Learning slight diplomatic skills will remove friction and give you even more freedom to do what you love."
+                    zh: "你的真性情非常吸引人，在个人创作或独立工作领域能大放异彩。适当掌握一些人际润滑技巧，可以让你的酷少一些阻碍，多一份自由。",
+                    en: "Your authenticity shines in creative or independent roles. Learning slight diplomatic skills will remove friction and give you even more freedom to do what you love."
                 }
             },
             guojunwang: {
@@ -376,35 +372,30 @@
                     en: "Gentle, romantic, and empathetic. You care far more about deep emotional connections and artistic richness than worldly status. Your kindness and warmth make you a trusted, compassionate soul."
                 },
                 advice: {
-                    zh: "【现代生存策略】你的善良与浪漫使你具备很好的人缘与生活情趣。但在现实竞争中，也需要增添几分防人之心与生存智慧，保护好自己的理想主义不受现实伤害。",
-                    en: "[Modern Career Guide] Your warmth fosters great relationships and appreciation for life. However, cultivate a dose of pragmatism and street-smart caution to safeguard your ideals in competitive spaces."
+                    zh: "你的善良与浪漫使你具备很好的人缘与生活情趣。但在现实竞争中，也需要增添几分防人之心与生存智慧，保护好自己的理想主义不受现实伤害。",
+                    en: "Your warmth fosters great relationships and appreciation for life. However, cultivate a dose of pragmatism and street-smart caution to safeguard your ideals in competitive spaces."
                 }
             }
         };
 
-        // Quiz content and language settings
         let currentLang = 'zh';
 
         const uiText = {
             zh: {
-                welcomeTitle: '',
                 welcomeDesc: '后宫如深海，有人步步为营走向权力之巅，有人真情至性宁折不弯。若你踏入紫禁城，你会如何书写自己的命运？',
                 welcomeQuote: '“紫禁城的风水养人，必不会叫你玉减香消。”',
                 startBtn: '开启宫廷测试', qLabel: '问题', prevBtn: '← 上一题', homeBtn: '返回首页', hintText: '凭直觉作答即可',
-                resultBadge: '测试结果', quoteLabel: '人物心声：', traitsLabel: '你的命运底色',
-                restartBtn: '重新测试', shareBtn: '复制结果卡片', toastMsg: '已复制结果文案，快去分享给好友吧！',
-                footerText: '紫禁风云性格测试 · 走完属于你的宫廷命运',
-                shareTemplate: (name, title) => `我刚刚完成了《甄嬛传》宫廷命运测试！\n我的结果是：${name} ${title}\n你会成为谁呢？`
+                resultBadge: '测试结果', quoteLabel: '人物心声：', traitsLabel: '你的命运底色', adviceLabel: '现代生存策略',
+                restartBtn: '重新测试', 
+                footerText: '紫禁风云性格测试 · 走完属于你的宫廷命运'
             },
             en: {
-                welcomeTitle: '',
                 welcomeDesc: 'The inner palace is a sea of hidden currents. If you entered the Forbidden City, how would you write your own destiny?',
                 welcomeQuote: '“The Forbidden City nurtures those within it; it would never let your beauty fade.”',
                 startBtn: 'Begin the Palace Test', qLabel: 'Question', prevBtn: '← Previous', homeBtn: 'Back to Home', hintText: 'Choose what feels most natural to you',
-                resultBadge: 'Your Result', quoteLabel: 'Character Voice:', traitsLabel: 'Your Destiny at Heart',
-                restartBtn: 'Take the Test Again', shareBtn: 'Copy Result', toastMsg: 'Result copied — share it with your friends!',
-                footerText: 'Palace Fate Personality Test · Walk Your Own Palace Destiny',
-                shareTemplate: (name, title) => `I just completed the Empresses in the Palace fate test!\nMy result: ${name} ${title}\nWho would you become?`
+                resultBadge: 'Your Result', quoteLabel: 'Character Voice:', traitsLabel: 'Your Destiny at Heart', adviceLabel: 'Modern Survival Guide',
+                restartBtn: 'Take the Test Again', 
+                footerText: 'Palace Fate Personality Test · Walk Your Own Palace Destiny'
             }
         };
 
@@ -427,7 +418,7 @@
                 { text: { zh: '这份关注让我有些不安。我更在意别人是否因此讨厌我。', en: 'The attention makes me uneasy. I worry whether others now dislike me.' }, scores: { anlingrong: 2 } },
                 { text: { zh: '恩宠也好，冷落也罢，我不想因此改变自己。', en: 'Favor or neglect, I do not want either to change who I am.' }, scores: { yelanyi: 2, guojunwang: 1 } }
             ]},
-            { id: 4, title: { zh: '你最信任的人突然被指控犯错。所有证据似乎都指向她，她只对说什么了一句：“你信我吗？”你会——', en: 'Your closest friend is accused and asks only: “Do you believe me?”' }, options: [
+            { id: 4, title: { zh: '你最信任的人突然被指控犯错。所有证据似乎都指向她，她只对你说了一句：“你信我吗？”你会——', en: 'Your closest friend is accused and asks only: “Do you believe me?”' }, options: [
                 { text: { zh: '先调查真相。信任不代表盲目，但我不会轻易放弃朋友。', en: 'Seek the truth first. Trust is not blindness, but I will not abandon a friend easily.' }, scores: { zhenhuan: 2 } },
                 { text: { zh: '如果我相信她，就会站在她身边。其他人的看法不重要。', en: 'If I believe her, I will stand beside her. Others’ opinions do not matter.' }, scores: { meizhuang: 2, guojunwang: 1 } },
                 { text: { zh: '我会怀疑：她是不是有什么事情没有告诉我？', en: 'I would wonder whether she is hiding something from me.' }, scores: { empress: 2, anlingrong: 1 } },
@@ -462,11 +453,8 @@
             ]}
         ];
 
-        // Switch Language Dynamic UI Update
         function setLanguage(lang) {
             currentLang = lang;
-            
-            // Buttons visual update
             const btnZh = document.getElementById('btn-lang-zh');
             const btnEn = document.getElementById('btn-lang-en');
             
@@ -478,9 +466,7 @@
                 btnZh.className = "px-3 py-1 rounded text-xs border border-palace-gold/50 text-palace-lightgold hover:border-palace-gold transition";
             }
 
-            // Update Static Strings
             const t = uiText[lang];
-            const welcomeTitle = document.getElementById('welcome-title'); if (welcomeTitle) welcomeTitle.innerText = t.welcomeTitle;
             document.getElementById('welcome-desc').innerText = t.welcomeDesc;
             document.getElementById('welcome-quote').innerText = t.welcomeQuote;
             document.getElementById('start-btn').innerText = t.startBtn;
@@ -492,31 +478,20 @@
             const resultBadge = document.getElementById('result-badge'); if (resultBadge) resultBadge.innerText = t.resultBadge;
             document.getElementById('quote-label').innerText = t.quoteLabel;
             document.getElementById('traits-label').innerHTML = `<span class="inline-block w-2 h-2 bg-palace-gold rounded-full mr-2"></span>${t.traitsLabel}`;
+            document.getElementById('advice-label').innerHTML = `<span class="inline-block w-2 h-2 bg-palace-gold rounded-full mr-2"></span>${t.adviceLabel}`;
             document.getElementById('restart-btn').innerText = t.restartBtn;
-            document.getElementById('share-btn').innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> ${t.shareBtn}`;
-            document.getElementById('toast-msg').innerText = t.toastMsg;
             document.getElementById('footer-text').innerText = t.footerText;
 
-            // Re-render current question if quiz active
             if (!quizScreen.classList.contains('hidden')) {
                 renderQuestion();
             }
         }
 
-        // State Management
         let currentQuestion = 0;
         let userAnswers = [];
-        let scores = {
-            zhenhuan: 0,
-            huafei: 0,
-            empress: 0,
-            meizhuang: 0,
-            anlingrong: 0,
-            yelanyi: 0,
-            guojunwang: 0
-        };
+        let isAdvancing = false;
+        let scores = { zhenhuan: 0, huafei: 0, empress: 0, meizhuang: 0, anlingrong: 0, yelanyi: 0, guojunwang: 0 };
 
-        // DOM Elements
         const welcomeScreen = document.getElementById('welcome-screen');
         const quizScreen = document.getElementById('quiz-screen');
         const resultScreen = document.getElementById('result-screen');
@@ -540,14 +515,11 @@
             document.getElementById('total-questions-num').innerText = questions.length;
             document.getElementById('question-text').innerText = `${q.id}. ${q.title[currentLang]}`;
 
-            // Update Progress Bar
             const progress = ((currentQuestion + 1) / questions.length) * 100;
             document.getElementById('progress-bar').style.width = `${progress}%`;
 
-            // Previous Button status
             document.getElementById('prev-btn').disabled = currentQuestion === 0;
 
-            // Render Options
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
 
@@ -568,11 +540,14 @@
         }
 
         function selectOption(index) {
+            if (isAdvancing) return;
+            isAdvancing = true;
+
             userAnswers[currentQuestion] = index;
             renderQuestion();
 
-            // Auto advance after slight delay for visual feedback
             setTimeout(() => {
+                isAdvancing = false;
                 if (currentQuestion < questions.length - 1) {
                     currentQuestion++;
                     renderQuestion();
@@ -590,10 +565,8 @@
         }
 
         function calculateResult() {
-            // Reset scores map
             for (let k in scores) scores[k] = 0;
             
-            // Tally Scores correctly from selected answers
             userAnswers.forEach((ansIdx, qIdx) => {
                 if (ansIdx !== undefined && questions[qIdx]) {
                     const option = questions[qIdx].options[ansIdx];
@@ -607,7 +580,6 @@
                 }
             });
 
-            // Find character with max score
             let maxChar = 'zhenhuan';
             let maxScore = -1;
             for (let charKey in scores) {
@@ -623,9 +595,12 @@
         function showResult(charKey) {
             const charData = characters[charKey] || characters['zhenhuan'];
 
-            // Update Avatar
             const avatarImg = document.getElementById('char-avatar');
             if (avatarImg) {
+                avatarImg.onerror = function() {
+                    this.onerror = null;
+                    this.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-palace-darkred font-calligraphy text-4xl text-palace-gold">宫</div>';
+                };
                 avatarImg.src = charData.avatar;
             }
 
@@ -633,6 +608,7 @@
             document.getElementById('char-title').innerText = charData.title[currentLang];
             document.getElementById('char-quote').innerText = charData.quote[currentLang];
             document.getElementById('char-traits').innerText = charData.traits[currentLang];
+            document.getElementById('char-advice').innerText = charData.advice[currentLang];
 
             quizScreen.classList.add('hidden');
             resultScreen.classList.remove('hidden');
@@ -652,26 +628,6 @@
             resultScreen.classList.add('hidden');
             welcomeScreen.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function copyShareText() {
-            const name = document.getElementById('char-name').innerText;
-            const title = document.getElementById('char-title').innerText;
-            const text = uiText[currentLang].shareTemplate(name, title);
-
-            // Fallback for clipboard copy
-            const dummy = document.createElement('textarea');
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand('copy');
-            document.body.removeChild(dummy);
-
-            const toast = document.getElementById('toast-msg');
-            toast.classList.remove('opacity-0');
-            setTimeout(() => {
-                toast.classList.add('opacity-0');
-            }, 2500);
         }
     </script>
 </body>
