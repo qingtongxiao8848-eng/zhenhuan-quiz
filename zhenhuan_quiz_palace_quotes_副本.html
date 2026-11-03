@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测测你是《甄嬛传》中的谁 - 宫廷性格测试</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Classical Chinese Look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        palace: {
+                            red: '#8b151b',
+                            darkred: '#5c0c10',
+                            gold: '#9a6b12',
+                            lightgold: '#6f4a0a',
+                            wood: '#2c1810',
+                            ink: '#1c1917',
+                            paper: '#fcf8f2',
+                            jade: '#2d5a4c'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif SC"', 'serif'],
+                        calligraphy: ['"Ma Shan Zheng"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f7efe2;
+            background-image: radial-gradient(rgba(139,21,27,0.10) 1px, transparent 1px), radial-gradient(rgba(212,175,55,0.10) 1px, #f7efe2 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            font-family: 'Noto Serif SC', serif;
+            color: #3b2418;
+        }
+
+        /* Palace Border & Decoration Frame */
+        .palace-card {
+            background: linear-gradient(135deg, rgba(255, 250, 240, 0.97), rgba(248, 235, 211, 0.98));
+            border: 2px solid #d4af37;
+            box-shadow: 0 10px 30px rgba(116, 70, 32, 0.12), inset 0 0 20px rgba(212, 175, 55, 0.08);
+            position: relative;
+        }
+
+        .palace-card::before {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            pointer-events: none;
+        }
+
+        /* Corner Accessories */
+        .corner-pattern {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-color: #d4af37;
+            pointer-events: none;
+        }
+        .corner-tl { top: -2px; left: -2px; border-top: 3px solid #d4af37; border-left: 3px solid #d4af37; }
+        .corner-tr { top: -2px; right: -2px; border-top: 3px solid #d4af37; border-right: 3px solid #d4af37; }
+        .corner-bl { bottom: -2px; left: -2px; border-bottom: 3px solid #d4af37; border-left: 3px solid #d4af37; }
+        .corner-br { bottom: -2px; right: -2px; border-bottom: 3px solid #d4af37; border-right: 3px solid #d4af37; }
+
+        .btn-palace {
+            background: linear-gradient(180deg, #8b151b 0%, #5c0c10 100%);
+            border: 1px solid #d4af37;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .btn-palace:hover {
+            background: linear-gradient(180deg, #a31c23 0%, #731116 100%);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .option-card {
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            transition: all 0.25s ease;
+        }
+        .option-card:hover, .option-card.selected {
+            background: rgba(139, 21, 27, 0.12);
+            border-color: #d4af37;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+            transform: scale(1.01);
+        }
+
+        /* Vertical text styling for title accent */
+        .writing-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+    <!-- Top Decorative Header -->
+    <header class="text-center py-4 relative z-10">
+        <div class="inline-flex items-center space-x-3">
+            <span class="w-8 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-palace-gold"></span>
+            <h1 class="font-calligraphy text-3xl sm:text-5xl text-palace-gold tracking-widest drop-shadow-md">
+                紫禁风云 · 命运签牌
+            </h1>
+            <span class="w-8 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-palace-gold"></span>
+        </div>
+        <p class="text-xs sm:text-sm text-palace-lightgold opacity-80 mt-1 font-serif tracking-widest">
+            — 测测你是《甄嬛传》中的哪位角色 —
+        </p>
+    </header>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto my-auto relative z-10 my-4">
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="palace-card rounded-lg p-6 sm:p-10 text-center fade-in">
+            <div class="corner-pattern corner-tl"></div>
+            <div class="corner-pattern corner-tr"></div>
+            <div class="corner-pattern corner-bl"></div>
+            <div class="corner-pattern corner-br"></div>
+
+            <div class="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-palace-gold flex items-center justify-center bg-palace-darkred shadow-lg">
+                <span class="font-calligraphy text-4xl text-palace-gold">宫</span>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="flex justify-center items-center gap-3 mb-6">
+                <span class="text-xs text-palace-lightgold opacity-80" id="lang-label">选择语言 / Select Language:</span>
+                <button onclick="setLanguage('zh')" id="btn-lang-zh" class="px-3 py-1 rounded text-xs border border-palace-gold bg-palace-gold text-palace-wood font-bold transition">中文</button>
+                <button onclick="setLanguage('en')" id="btn-lang-en" class="px-3 py-1 rounded text-xs border border-palace-gold/50 text-palace-lightgold hover:border-palace-gold transition">English</button>
+            </div>
+            
+            <p id="welcome-desc" class="text-palace-wood leading-relaxed mb-8 text-sm sm:text-base px-2">
+                后宫如深海，有人步步为营走向权力之巅，有人真情至性宁折不弯，有人机关算尽一场空。若你身处紫禁城的波诡云谲之中，你的性格底色将引领你成为谁？
+            </p>
+
+            <div id="welcome-quote" class="bg-palace-lightgold/35 border border-palace-gold/30 rounded p-4 mb-8 text-xs text-palace-lightgold/80 italic">
+                “紫禁城的风水养人，必不会叫你玉减香消。”
+            </div>
+
+            <button id="start-btn" onclick="startQuiz()" class="btn-palace text-white font-bold px-8 py-3.5 rounded-md text-lg tracking-widest border border-palace-gold w-full sm:w-auto">
+                开启宫廷测试
+            </button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="palace-card rounded-lg p-5 sm:p-8 hidden fade-in">
+            <div class="corner-pattern corner-tl"></div>
+            <div class="corner-pattern corner-tr"></div>
+            <div class="corner-pattern corner-bl"></div>
+            <div class="corner-pattern corner-br"></div>
+
+            <!-- Progress Header -->
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-palace-gold/20">
+                <span class="text-xs text-palace-gold tracking-widest uppercase"><span id="q-label">问题</span> <span id="current-question-num" class="text-base font-bold">1</span> / <span id="total-questions-num">8</span></span>
+                <div class="w-36 sm:w-48 bg-palace-wood/15 h-2 rounded-full overflow-hidden border border-palace-gold/30">
+                    <div id="progress-bar" class="bg-gradient-to-r from-palace-gold to-yellow-200 h-full w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- Question Title -->
+            <div class="mb-6">
+                <h3 id="question-text" class="text-lg sm:text-xl font-semibold text-palace-wood leading-snug">
+                    <!-- Dynamic Question Text -->
+                </h3>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 sm:space-y-4 mb-6">
+                <!-- Dynamic Options -->
+            </div>
+
+            <!-- Navigation Bar -->
+            <div class="flex justify-between items-center pt-2 gap-2">
+                <button id="home-btn" onclick="goHome()" class="px-3 py-2 text-xs sm:text-sm text-palace-wood/70 hover:text-palace-red transition">⌂ <span id="home-btn-text">返回首页</span></button>
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 text-xs sm:text-sm text-palace-gold opacity-70 hover:opacity-100 disabled:opacity-20 transition" disabled>
+                    ← 上一题
+                </button>
+                <span id="hint-text" class="text-xs text-palace-wood/60 italic hidden sm:inline">凭直觉作答即可</span>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="palace-card rounded-lg p-6 sm:p-10 hidden fade-in">
+            <div class="corner-pattern corner-tl"></div>
+            <div class="corner-pattern corner-tr"></div>
+            <div class="corner-pattern corner-bl"></div>
+            <div class="corner-pattern corner-br"></div>
+
+            <div class="text-center mb-6">
+                <span id="result-badge" class="text-xs uppercase tracking-widest text-palace-gold border-b border-palace-gold pb-1">测试结果</span>
+                
+                <!-- Character Avatar Image Frame -->
+                <div class="relative w-32 h-32 sm:w-40 sm:h-40 mx-auto mt-5 mb-3 rounded-full border-4 border-palace-gold overflow-hidden shadow-2xl bg-palace-wood group">
+                    <img id="char-avatar" alt="角色肖像" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">s
+
+                <h2 class="text-3xl sm:text-4xl font-calligraphy text-palace-gold mt-2" id="char-name">甄嬛</h2>
+                <p class="text-sm text-palace-wood/80 italic mt-1" id="char-title">【功成身退的后宫至尊】</p>
+            </div>
+
+            <!-- Quote Box -->
+            <div class="bg-palace-lightgold/50 border-l-4 border-palace-gold p-4 mb-6 rounded-r">
+                <p id="quote-label" class="text-xs text-palace-gold mb-1 font-semibold">经典金句：</p>
+                <p class="text-sm sm:text-base text-palace-ink italic font-serif" id="char-quote">“这几年的情爱与时光，终究是错付了。”</p>
+            </div>
+
+            <!-- Character Profile Details -->
+            <div class="space-y-5 text-sm leading-relaxed mb-8">
+                <div class="bg-white/55 p-4 rounded border border-palace-gold/15">
+                    <h4 id="traits-label" class="text-palace-gold font-bold mb-2 flex items-center">
+                        <span class="inline-block w-2 h-2 bg-palace-gold rounded-full mr-2"></span>性格底色
+                    </h4>
+                    <p class="text-palace-wood text-xs sm:text-sm" id="char-traits">分析中...</p>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button id="restart-btn" onclick="restartQuiz()" class="btn-palace text-white font-bold px-6 py-3 rounded text-sm tracking-wider border border-palace-gold flex-1">
+                    重新测试
+                </button>
+                <button id="result-home-btn" onclick="goHome()" class="bg-white/60 hover:bg-white text-palace-wood font-bold px-6 py-3 rounded text-sm tracking-wider border border-palace-gold/60 transition flex-1">
+                    返回首页
+                </button>
+                <button id="share-btn" onclick="copyShareText()" class="bg-palace-wood hover:bg-black/60 text-palace-gold font-bold px-6 py-3 rounded text-sm tracking-wider border border-palace-gold/60 transition flex-1 flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                    复制结果卡片
+                </button>
+            </div>
+            <div id="toast-msg" class="text-center text-xs text-palace-gold mt-3 opacity-0 transition-opacity">已复制结果文案，快去分享给好友吧！</div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer-text" class="text-center text-xs text-palace-wood/60 py-3 relative z-10">
+        紫禁风云性格测试 · 紫禁城深宫浮沉录
+    </footer>
+
+    <script>
+        // Character Results Database (Bilingual)
+        const characters = {
+            zhenhuan: {
+                name: { zh: "甄嬛", en: "Zhen Huan (Empress Xiaoshengxian)" },
+                avatar: "./images/zhenhuan.jpg",
+                title: { zh: "【智勇双全 · 逆风翻盘的谋略家】", en: "[Master Strategist · Resilient & Sovereign]" },
+                quote: { 
+                    zh: "“这几年的情爱与时光，终究是错付了……从今往后，臣妾便只有谋划，没有情爱。”",
+                    en: "“The love and years spent were mistargeted after all... From now on, I have only strategy, no romance.”"
+                },
+                traits: {
+                    zh: "你通透聪颖，极具悟性与战略定力。前期温婉重情，但在经历挫折后能迅速看清现实本质。你既有重情重义的一面，又有决断果敢的狠劲。在复杂环境中，你善于洞察人心与借力打力。",
+                    en: "Insightful and strategic, you possess high emotional intelligence and resilience. Though affectionate initially, setbacks teach you to see reality clearly. You balance empathy with decisive grit, navigating complex environments with finesse."
+                },
+                advice: {
+                    zh: "【现代生存策略】你在工作中具备极高的上升潜力。切记保持初心与底线，避免过度沉溺于防备与策略。对待值得信任的伙伴可多一份坦诚，你的格局决定了你能走的远度。",
+                    en: "[Modern Career Guide] You have immense leadership potential. Stay true to your core values and avoid over-defensiveness. Cultivate genuine trust with key allies—your vision will define how far you reach."
+                }
+            },
+            huafei: {
+                name: { zh: "华妃 (年世兰)", en: "Consort Hua (Nian Shilan)" },
+                avatar: "./images/huafei.jpg",
+                title: { zh: "【炽热张扬 · 敢爱敢恨的真性情】", en: "[Passionate & Fierce · Bold Authenticity]" },
+                quote: { 
+                    zh: "“做衣如做人，一定要花团锦簇，轰轰烈烈的才好。”",
+                    en: "“Making clothes is like living life: it must be splendid and magnificent, lived in full glory.”"
+                },
+                traits: {
+                    zh: "你性格明艳热烈，气场强大，做事果敢直接。讨厌虚伪与弯弯绕绕，对于认准的人和事倾尽全力。虽然脾气有时急躁、不够委婉，但你的真实与霸气往往能吸引忠诚的跟随者。",
+                    en: "Vibrant, confident, and direct. You despise hypocrisy and pour your heart into whatever or whoever you commit to. Though hot-tempered at times, your authenticity and magnetic presence attract fiercely loyal allies."
+                },
+                advice: {
+                    zh: "【现代生存策略】你的执行力和个人魅力非凡，但要警惕“刚愎自用”。在职场与生活中，适当收敛锋芒、听取不同意见，可以帮你规避不少小人暗算与不必必要的冲突。",
+                    en: "[Modern Career Guide] Your charisma and execution power are outstanding. However, beware of impulsiveness and rigidity. Listening to diverse perspectives will protect you from unnecessary conflict and hidden pitfalls."
+                }
+            },
+            empress: {
+                name: { zh: "皇后 (乌拉那拉·宜修)", en: "Empress Yixiu" },
+                avatar: "./images/empress.jpg",
+                title: { zh: "【深谋远虑 · 掌控全局的执念者】", en: "[Mastermind · Calculated & Driven]" },
+                quote: { 
+                    zh: "“臣妾做不到啊！这后宫之中，谁又真正快活过？”",
+                    en: "“Your servant cannot do it! In this inner palace, who has ever been truly happy?”"
+                },
+                traits: {
+                    zh: "你城府深沉，极具忍耐力与大局观。做事追求极致的掌控感与规矩，擅长在幕后协调与布局。你的内心深处有着强烈的安全感需求与竞争意识，一旦立下目标便不达目的誓不罢休。",
+                    en: "Patient, observant, and deeply calculating. You thrive on order, control, and long-term planning. Driven by a strong need for security and achievement, you pursue goals with relentless focus."
+                },
+                advice: {
+                    zh: "【现代生存策略】你的管理与规划能力极强，但不要给自己和他人施加过大的心理压力。学会放下过度的执念与完美主义，适度放松才能让生活与事业更加从容可持续。",
+                    en: "[Modern Career Guide] Your organizational skills are top-notch. However, avoid overworking yourself or imposing excessive pressure on others. Releasing obsession and perfectionism makes your success sustainable."
+                }
+            },
+            meizhuang: {
+                name: { zh: "沈眉庄", en: "Shen Meizhuang" },
+                avatar: "./images/meizhuang.jpg",
+                title: { zh: "【高洁傲岸 · 宁折不弯的清流】", en: "[Noble & Unyielding · Pure Integrity]" },
+                quote: { 
+                    zh: "“宁可枝头抱香死，何曾吹落北风中。我拿出去的心，绝收不回来。”",
+                    en: "“I'd rather wither on the branch in fragrance than fall into the cold wind. Once given, my heart never retreats.”"
+                },
+                traits: {
+                    zh: "你端庄典雅，骨子里透着傲骨与清高。你对感情与人品有着极高的要求，眼里容不下沙子。一旦看清一个人或一件事的本质，便会干净利落地划清界限，绝不曲意逢迎。",
+                    en: "Elegant, dignified, and steadfast in moral principles. You hold high standards for relationships and character. Once trust is broken, you sever ties cleanly without lingering regret or flattery."
+                },
+                advice: {
+                    zh: "【现代生存策略】你的品质令人敬佩，但有时过分固执可能让自己陷入孤立。在非原则性问题上，保持适度的弹性与圆融，既能保护自己的高洁，又能更好地适应社会。",
+                    en: "[Modern Career Guide] Your integrity is inspiring, but extreme stubbornness may isolate you. Maintaining flexibility in non-essential matters helps protect your ideals while thriving in social environments."
+                }
+            },
+            anlingrong: {
+                name: { zh: "安陵容", en: "An Lingrong" },
+                avatar: "./images/anlingrong.jpg",
+                title: { zh: "【敏感纤细 · 逆境挣扎的奋斗者】", en: "[Sensitive & Meticulous · Diligent Striver]" },
+                quote: { 
+                    zh: "“这条命，这口气，我从来由不得自己。”",
+                    en: "“This life, this very breath—I have never truly had the power to decide them for myself.”"
+                },
+                traits: {
+                    zh: "你心思极其细腻，敏感度高，自尊心极强。你往往付出双倍努力去证明自己，在专业技能或细微之处有着惊人的韧性。容易受外界评价影响，内心常在自卑与证明自己的渴望间挣扎。",
+                    en: "Detail-oriented, sensitive, and deeply self-conscious. You work twice as hard to prove your worth and exhibit remarkable mastery in specialized skills. Internal struggles between self-doubt and ambition drive you."
+                },
+                advice: {
+                    zh: "【现代生存策略】你的专注与细腻是巨大的财富。要学会接纳自我，建立由内而外的自信，不必过分介意他人的眼光。停止内耗，把精力放在自我成长而非与他人攀比上。",
+                    en: "[Modern Career Guide] Your precision and dedication are valuable assets. Work on building self-acceptance and internal validation. Focus energy on personal growth rather than comparison with others."
+                }
+            },
+            yelanyi: {
+                name: { zh: "叶澜依 (宁嫔)", en: "Ye Lanyi (Consort Ning)" },
+                avatar: "./images/yelanyi.jpg",
+                title: { zh: "【桀骜不驯 · 酷飒洒脱的酷系灵魂】", en: "[Rebel Soul · Fearless & Independent]" },
+                quote: { 
+                    zh: "“这福气给你要不要？我只做我认准的事，别人怎么看与我何干。”",
+                    en: "“Would you like this so-called 'blessing'? I only do what I believe in, regardless of what others think.”"
+                },
+                traits: {
+                    zh: "你特立独行，不屑于虚伪的社交与功名利禄。对待喜欢的人倾心相报，对待讨厌的人冷若冰霜。你有着极强的独立人格，讨厌被规矩束缚，活得真实、酷飒且干净利落。",
+                    en: "Independent, blunt, and unbothered by status or social pleasantries. You treat loved ones with devotion and rivals with icy coldness. You value freedom, authenticity, and living on your own terms."
+                },
+                advice: {
+                    zh: "【现代生存策略】你的真性情非常吸引人，在个人创作或独立工作领域能大放异彩。适当掌握一些人际润滑技巧，可以让你的酷少一些阻碍，多一份自由。",
+                    en: "[Modern Career Guide] Your authenticity shines in creative or independent roles. Learning slight diplomatic skills will remove friction and give you even more freedom to do what you love."
+                }
+            },
+            guojunwang: {
+                name: { zh: "果郡王 (允礼)", en: "Yunli (Prince Guo)" },
+                avatar: "./images/guojunwang.jpg",
+                title: { zh: "【温润如玉 · 浪漫理想主义者】", en: "[Gentle & Devoted · Romantic Idealist]" },
+                quote: { 
+                    zh: "“情之一字，不知所起，一往而深。若能守护所爱，名利不过浮云。”",
+                    en: "“Love arises without origin yet runs deep. If I can protect the one I love, fame and power are mere fleeting clouds.”"
+                },
+                traits: {
+                    zh: "你性格温和，风雅多情，内心拥有一方净土。比起权势利禄，你更看重精神世界的丰盈与真挚的情感。你善解人意，具有很强的同理心与艺术审美能力。",
+                    en: "Gentle, romantic, and empathetic. You care far more about deep emotional connections and artistic richness than worldly status. Your kindness and warmth make you a trusted, compassionate soul."
+                },
+                advice: {
+                    zh: "【现代生存策略】你的善良与浪漫使你具备很好的人缘与生活情趣。但在现实竞争中，也需要增添几分防人之心与生存智慧，保护好自己的理想主义不受现实伤害。",
+                    en: "[Modern Career Guide] Your warmth fosters great relationships and appreciation for life. However, cultivate a dose of pragmatism and street-smart caution to safeguard your ideals in competitive spaces."
+                }
+            }
+        };
+
+        // Quiz content and language settings
+        let currentLang = 'zh';
+
+        const uiText = {
+            zh: {
+                welcomeTitle: '',
+                welcomeDesc: '后宫如深海，有人步步为营走向权力之巅，有人真情至性宁折不弯。若你踏入紫禁城，你会如何书写自己的命运？',
+                welcomeQuote: '“紫禁城的风水养人，必不会叫你玉减香消。”',
+                startBtn: '开启宫廷测试', qLabel: '问题', prevBtn: '← 上一题', homeBtn: '返回首页', hintText: '凭直觉作答即可',
+                resultBadge: '测试结果', quoteLabel: '人物心声：', traitsLabel: '你的命运底色',
+                restartBtn: '重新测试', shareBtn: '复制结果卡片', toastMsg: '已复制结果文案，快去分享给好友吧！',
+                footerText: '紫禁风云性格测试 · 走完属于你的宫廷命运',
+                shareTemplate: (name, title) => `我刚刚完成了《甄嬛传》宫廷命运测试！\n我的结果是：${name} ${title}\n你会成为谁呢？`
+            },
+            en: {
+                welcomeTitle: '',
+                welcomeDesc: 'The inner palace is a sea of hidden currents. If you entered the Forbidden City, how would you write your own destiny?',
+                welcomeQuote: '“The Forbidden City nurtures those within it; it would never let your beauty fade.”',
+                startBtn: 'Begin the Palace Test', qLabel: 'Question', prevBtn: '← Previous', homeBtn: 'Back to Home', hintText: 'Choose what feels most natural to you',
+                resultBadge: 'Your Result', quoteLabel: 'Character Voice:', traitsLabel: 'Your Destiny at Heart',
+                restartBtn: 'Take the Test Again', shareBtn: 'Copy Result', toastMsg: 'Result copied — share it with your friends!',
+                footerText: 'Palace Fate Personality Test · Walk Your Own Palace Destiny',
+                shareTemplate: (name, title) => `I just completed the Empresses in the Palace fate test!\nMy result: ${name} ${title}\nWho would you become?`
+            }
+        };
+
+        const questions = [
+            { id: 1, title: { zh: '你第一次走进宫门。四周陌生而庄严，新秀女们已经开始悄悄打量彼此。此时，你会——', en: 'You step through the palace gates for the first time. What do you do?' }, options: [
+                { text: { zh: '不急着说话，先默默观察每个人的神情和举动。', en: 'Stay quiet and observe everyone before making a move.' }, scores: { zhenhuan: 2, empress: 1 } },
+                { text: { zh: '大大方方地与人交谈。我相信，气势不能输。', en: 'Speak confidently. I refuse to lose in presence or spirit.' }, scores: { huafei: 2 } },
+                { text: { zh: '找一个看起来真诚的人主动搭话。独自在这里，总归不容易。', en: 'Approach someone who seems sincere. It is hard to face this place alone.' }, scores: { guojunwang: 1, zhenhuan: 1, anlingrong: 1 } },
+                { text: { zh: '不管别人怎么看，我只想按照自己的方式来。', en: 'No matter what others think, I will do things my own way.' }, scores: { yelanyi: 2, meizhuang: 1 } }
+            ]},
+            { id: 2, title: { zh: '一位秀女对你十分热情，但你发现她也在暗中向别人打听你的家世。你会——', en: 'A friendly newcomer is also asking others about your background. What do you do?' }, options: [
+                { text: { zh: '表面如常，但心里记下这件事，以后再慢慢观察。', en: 'Act normally, remember it, and continue observing.' }, scores: { zhenhuan: 2, empress: 1 } },
+                { text: { zh: '既然觉得她不真诚，就不必浪费时间维持关系。', en: 'If she is insincere, there is no need to maintain the relationship.' }, scores: { meizhuang: 2, yelanyi: 1 } },
+                { text: { zh: '也许她只是没有安全感，我愿意先相信她一次。', en: 'Perhaps she simply feels insecure. I am willing to trust her once.' }, scores: { guojunwang: 2, anlingrong: 1 } },
+                { text: { zh: '既然大家都在试探，那我也不会毫无准备。', en: 'If everyone is testing one another, I will be prepared too.' }, scores: { empress: 2, huafei: 1 } }
+            ]},
+            { id: 3, title: { zh: '一次宴会上，你的一句话让皇帝注意到了你。突然之间，你成了众人议论的对象。面对这份恩宠，你会——', en: 'The Emperor notices you, and suddenly everyone is talking. How do you respond?' }, options: [
+                { text: { zh: '越是被人关注，越要谨慎。先保护好自己。', en: 'The more attention I receive, the more careful I should be.' }, scores: { zhenhuan: 2, meizhuang: 1 } },
+                { text: { zh: '既然机会来了，我自然不会让给别人。', en: 'If an opportunity comes, I will not hand it to someone else.' }, scores: { huafei: 2, empress: 1 } },
+                { text: { zh: '这份关注让我有些不安。我更在意别人是否因此讨厌我。', en: 'The attention makes me uneasy. I worry whether others now dislike me.' }, scores: { anlingrong: 2 } },
+                { text: { zh: '恩宠也好，冷落也罢，我不想因此改变自己。', en: 'Favor or neglect, I do not want either to change who I am.' }, scores: { yelanyi: 2, guojunwang: 1 } }
+            ]},
+            { id: 4, title: { zh: '你最信任的人突然被指控犯错。所有证据似乎都指向她，她只对你说了一句：“你信我吗？”你会——', en: 'Your closest friend is accused and asks only: “Do you believe me?”' }, options: [
+                { text: { zh: '先调查真相。信任不代表盲目，但我不会轻易放弃朋友。', en: 'Seek the truth first. Trust is not blindness, but I will not abandon a friend easily.' }, scores: { zhenhuan: 2 } },
+                { text: { zh: '如果我相信她，就会站在她身边。其他人的看法不重要。', en: 'If I believe her, I will stand beside her. Others’ opinions do not matter.' }, scores: { meizhuang: 2, guojunwang: 1 } },
+                { text: { zh: '我会怀疑：她是不是有什么事情没有告诉我？', en: 'I would wonder whether she is hiding something from me.' }, scores: { empress: 2, anlingrong: 1 } },
+                { text: { zh: '谁敢冤枉我的人，我不会让这件事轻易过去。', en: 'No one gets to frame my people without consequences.' }, scores: { huafei: 2, yelanyi: 1 } }
+            ]},
+            { id: 5, title: { zh: '你终于发现，有人一直在暗中针对你。她地位更高，也拥有更多支持者。你会怎么做？', en: 'Someone powerful has been working against you. What is your move?' }, options: [
+                { text: { zh: '不正面冲突。我要等一个真正能够改变局势的机会。', en: 'Avoid direct conflict and wait for the moment that can truly change the situation.' }, scores: { zhenhuan: 2, empress: 1 } },
+                { text: { zh: '她既然已经欺到头上，我绝不会忍。', en: 'If she has pushed this far, I will not tolerate it.' }, scores: { huafei: 2, yelanyi: 1 } },
+                { text: { zh: '我不喜欢争斗，但如果触及底线，我会彻底与她划清界限。', en: 'I dislike conflict, but once my principles are crossed, I will sever ties completely.' }, scores: { meizhuang: 2 } },
+                { text: { zh: '我要让自己变得更强，总有一天不再需要害怕任何人。', en: 'I will become stronger until I no longer need to fear anyone.' }, scores: { anlingrong: 2, zhenhuan: 1 } }
+            ]},
+            { id: 6, title: { zh: '深夜，你独自站在宫墙下，忽然意识到：为了活下去，你可能会慢慢变成另一个人。你最害怕失去的是——', en: 'To survive, you may become someone else. What do you fear losing most?' }, options: [
+                { text: { zh: '曾经那个相信真心的自己。', en: 'The part of myself that once believed in sincerity.' }, scores: { zhenhuan: 2, guojunwang: 2 } },
+                { text: { zh: '自己的尊严。即使没有人理解，我也不愿低头。', en: 'My dignity. Even if no one understands me, I refuse to bow.' }, scores: { meizhuang: 2, yelanyi: 1 } },
+                { text: { zh: '被所有人抛在身后，再也没有人需要我。', en: 'Being left behind by everyone, with no one needing me anymore.' }, scores: { anlingrong: 2 } },
+                { text: { zh: '失去掌控自己命运的能力。', en: 'Losing the ability to control my own destiny.' }, scores: { empress: 2, huafei: 1 } }
+            ]},
+            { id: 7, title: { zh: '多年以后，你终于拥有了曾经想要的东西，却也失去了一些重要的人和事。如果可以重新选择，你会——', en: 'Years later, you have what you wanted, but have lost much. Would you choose differently?' }, options: [
+                { text: { zh: '仍然选择走到今天。至少现在，我能掌握自己的命运。', en: 'I would still choose this path. At least now, I control my own destiny.' }, scores: { zhenhuan: 2, empress: 1 } },
+                { text: { zh: '宁愿少一些权力，也想保留最初的真心。', en: 'I would rather have less power and keep my original sincerity.' }, scores: { guojunwang: 2, meizhuang: 1 } },
+                { text: { zh: '如果这是我认定的路，就算孤身一人也不会后悔。', en: 'If this is the path I chose, I would not regret it even alone.' }, scores: { yelanyi: 2, huafei: 1 } },
+                { text: { zh: '我只希望，当初能有一个人真正看见我的努力。', en: 'I only wish someone had truly seen how hard I tried.' }, scores: { anlingrong: 2 } }
+            ]},
+            { id: 8, title: { zh: '宫门缓缓关闭。多年后，当有人问起你的一生，你希望别人如何记住你？', en: 'Years later, how would you want your life to be remembered?' }, options: [
+                { text: { zh: '“她曾经天真，但最后成为了自己命运的主人。”', en: '“She was once innocent, but became the master of her own fate.”' }, scores: { zhenhuan: 3 } },
+                { text: { zh: '“她这一生爱得热烈，恨得痛快，从不让任何人轻视。”', en: '“She loved fiercely, hated freely, and never let anyone look down on her.”' }, scores: { huafei: 3 } },
+                { text: { zh: '“她机关算尽，只为守住自己认定的东西。”', en: '“She calculated every move to protect what she believed was hers.”' }, scores: { empress: 3 } },
+                { text: { zh: '“她不一定赢得最多，但从未违背自己的原则。”', en: '“She may not have won the most, but she never betrayed her principles.”' }, scores: { meizhuang: 3 } },
+                { text: { zh: '“她一直渴望被看见，也一直拼命证明自己的价值。”', en: '“She longed to be seen and fought to prove her worth.”' }, scores: { anlingrong: 3 } },
+                { text: { zh: '“她从不属于任何人的规矩，只忠于自己的选择。”', en: '“She belonged to no one’s rules, only to her own choices.”' }, scores: { yelanyi: 3 } },
+                { text: { zh: '“比起权力和名利，她始终记得什么是真心。”', en: '“More than power or fame, she remembered what a sincere heart meant.”' }, scores: { guojunwang: 3 } }
+            ]}
+        ];
+
+        // Switch Language Dynamic UI Update
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // Buttons visual update
+            const btnZh = document.getElementById('btn-lang-zh');
+            const btnEn = document.getElementById('btn-lang-en');
+            
+            if (lang === 'zh') {
+                btnZh.className = "px-3 py-1 rounded text-xs border border-palace-gold bg-palace-gold text-palace-wood font-bold transition";
+                btnEn.className = "px-3 py-1 rounded text-xs border border-palace-gold/50 text-palace-lightgold hover:border-palace-gold transition";
+            } else {
+                btnEn.className = "px-3 py-1 rounded text-xs border border-palace-gold bg-palace-gold text-palace-wood font-bold transition";
+                btnZh.className = "px-3 py-1 rounded text-xs border border-palace-gold/50 text-palace-lightgold hover:border-palace-gold transition";
+            }
+
+            // Update Static Strings
+            const t = uiText[lang];
+            const welcomeTitle = document.getElementById('welcome-title'); if (welcomeTitle) welcomeTitle.innerText = t.welcomeTitle;
+            document.getElementById('welcome-desc').innerText = t.welcomeDesc;
+            document.getElementById('welcome-quote').innerText = t.welcomeQuote;
+            document.getElementById('start-btn').innerText = t.startBtn;
+            document.getElementById('q-label').innerText = t.qLabel;
+            document.getElementById('prev-btn').innerText = t.prevBtn;
+            const homeBtnText = document.getElementById('home-btn-text'); if (homeBtnText) homeBtnText.innerText = t.homeBtn;
+            const resultHomeBtn = document.getElementById('result-home-btn'); if (resultHomeBtn) resultHomeBtn.innerText = t.homeBtn;
+            document.getElementById('hint-text').innerText = t.hintText;
+            const resultBadge = document.getElementById('result-badge'); if (resultBadge) resultBadge.innerText = t.resultBadge;
+            document.getElementById('quote-label').innerText = t.quoteLabel;
+            document.getElementById('traits-label').innerHTML = `<span class="inline-block w-2 h-2 bg-palace-gold rounded-full mr-2"></span>${t.traitsLabel}`;
+            document.getElementById('restart-btn').innerText = t.restartBtn;
+            document.getElementById('share-btn').innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> ${t.shareBtn}`;
+            document.getElementById('toast-msg').innerText = t.toastMsg;
+            document.getElementById('footer-text').innerText = t.footerText;
+
+            // Re-render current question if quiz active
+            if (!quizScreen.classList.contains('hidden')) {
+                renderQuestion();
+            }
+        }
+
+        // State Management
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let scores = {
+            zhenhuan: 0,
+            huafei: 0,
+            empress: 0,
+            meizhuang: 0,
+            anlingrong: 0,
+            yelanyi: 0,
+            guojunwang: 0
+        };
+
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+
+        function startQuiz() {
+            welcomeScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            currentQuestion = 0;
+            resetScores();
+            renderQuestion();
+        }
+
+        function resetScores() {
+            userAnswers = [];
+            for (let k in scores) scores[k] = 0;
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('current-question-num').innerText = currentQuestion + 1;
+            document.getElementById('total-questions-num').innerText = questions.length;
+            document.getElementById('question-text').innerText = `${q.id}. ${q.title[currentLang]}`;
+
+            // Update Progress Bar
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Previous Button status
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+
+            // Render Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const isSelected = userAnswers[currentQuestion] === idx;
+                const optEl = document.createElement('div');
+                optEl.className = `option-card p-4 rounded-md cursor-pointer flex items-center justify-between text-sm sm:text-base ${isSelected ? 'selected' : ''}`;
+                optEl.onclick = () => selectOption(idx);
+
+                optEl.innerHTML = `
+                    <span class="text-palace-ink leading-snug">${opt.text[currentLang]}</span>
+                    <div class="w-5 h-5 rounded-full border border-palace-gold/60 flex items-center justify-center shrink-0 ml-3 ${isSelected ? 'bg-palace-gold' : ''}">
+                        ${isSelected ? '<div class="w-2 h-2 rounded-full bg-palace-darkred"></div>' : ''}
+                    </div>
+                `;
+                optionsContainer.appendChild(optEl);
+            });
+        }
+
+        function selectOption(index) {
+            userAnswers[currentQuestion] = index;
+            renderQuestion();
+
+            // Auto advance after slight delay for visual feedback
+            setTimeout(() => {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    renderQuestion();
+                } else {
+                    calculateResult();
+                }
+            }, 250);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        function calculateResult() {
+            // Reset scores map
+            for (let k in scores) scores[k] = 0;
+            
+            // Tally Scores correctly from selected answers
+            userAnswers.forEach((ansIdx, qIdx) => {
+                if (ansIdx !== undefined && questions[qIdx]) {
+                    const option = questions[qIdx].options[ansIdx];
+                    if (option && option.scores) {
+                        for (let charKey in option.scores) {
+                            if (scores[charKey] !== undefined) {
+                                scores[charKey] += option.scores[charKey];
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Find character with max score
+            let maxChar = 'zhenhuan';
+            let maxScore = -1;
+            for (let charKey in scores) {
+                if (scores[charKey] > maxScore) {
+                    maxScore = scores[charKey];
+                    maxChar = charKey;
+                }
+            }
+
+            showResult(maxChar);
+        }
+
+        function showResult(charKey) {
+            const charData = characters[charKey] || characters['zhenhuan'];
+
+            // Update Avatar
+            const avatarImg = document.getElementById('char-avatar');
+            if (avatarImg) {
+                avatarImg.src = charData.avatar;
+            }
+
+            document.getElementById('char-name').innerText = charData.name[currentLang];
+            document.getElementById('char-title').innerText = charData.title[currentLang];
+            document.getElementById('char-quote').innerText = charData.quote[currentLang];
+            document.getElementById('char-traits').innerText = charData.traits[currentLang];
+
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
+            currentQuestion = 0;
+            resetScores();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function copyShareText() {
+            const name = document.getElementById('char-name').innerText;
+            const title = document.getElementById('char-title').innerText;
+            const text = uiText[currentLang].shareTemplate(name, title);
+
+            // Fallback for clipboard copy
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            const toast = document.getElementById('toast-msg');
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
